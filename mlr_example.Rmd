@@ -1,0 +1,69 @@
+---
+title: "Intro to MLR in R"
+author: "Shivon Sue-Chee"
+date: "July 9, 2020"
+output: 
+  beamer_presentation: 
+    fig_width: 8
+    fig_height: 6
+fontsize: 9pt
+---
+
+
+## Intro to MLR in R
+
+- How to run a MLR
+- How to interpret an MLR output
+- Textbook: A Modern Approach to Regression with R by S.J. Sheather
+
+
+
+## The data: Salary to Experience
+
+```{r, echo = TRUE}
+profsalary= read.table("~/Documents/profsalary.txt", header=TRUE)
+attach(profsalary)
+```
+
+
+## Scatterplot
+
+```{r, echo = TRUE}
+#Figure 5.1 on page 126
+plot(Experience,Salary,xlab="Years of Experience")
+```
+
+
+## Example: An MLR output
+
+```{r, echo=TRUE}
+m2 <- lm(Salary~Experience + I(Experience^2))
+plot(Experience,Salary,xlab="Years of Experience")
+ExperienceNew <- seq(0,37,len=37)
+lines(ExperienceNew,predict(m2,newdata=data.frame(Experience=ExperienceNew)))
+```
+
+
+#Figure 5.4 on page 128
+```{r, echo=TRUE}
+StanRes2 <- rstandard(m2)
+plot(Experience,StanRes2,xlab="Years of Experience", ylab="Standardized Residuals")
+```
+
+
+
+#Figure 5.5 on page 128
+```{r, echo=TRUE}
+leverage2 <- hatvalues(m2)
+plot(Experience,leverage2,xlab="Years of Experience",ylab="Leverage")
+abline(h=6/max(Case),lty=2)
+```
+
+
+#Figure 5.6 on page 129
+```{r, echo=TRUE}
+par(mfrow=c(2,2))
+plot(m2)
+```
+
+
